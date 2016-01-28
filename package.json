@@ -1,0 +1,32 @@
+{
+  "name": "kick-ioc",
+  "version": "1.0.9",
+  "description": "kick-ioc",
+  "main": "",
+  "dependencies": {
+    "bluebird": "^3.1.1",
+    "co": "^4.6.0",
+    "lodash": "^4.0.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-es2015-destructuring": "^6.4.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.4.5",
+    "babel-plugin-transform-es2015-parameters": "^6.4.5",
+    "babel-plugin-transform-es2015-spread": "^6.4.0",
+    "babel-plugin-transform-strict-mode": "^6.3.13",
+    "babel-polyfill": "^6.3.14",
+    "babel-register": "^6.3.13",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1",
+    "mocha": "^2.3.4"
+  },
+  "scripts": {
+    "test": "mocha --compilers js:babel-register"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kickjs/ioc.git"
+  }
+}
