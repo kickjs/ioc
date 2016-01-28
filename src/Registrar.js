@@ -13,7 +13,15 @@ class Registrar {
 
     static create() {
 
-        return new Registrar();
+        let instance = new Registrar();
+
+        instance.bind( 'ioc', function () {
+
+            return this;
+
+        } );
+
+        return instance;
 
     }
 

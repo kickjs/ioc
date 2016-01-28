@@ -12,11 +12,6 @@ const Registrar = require( '../src/Registrar' );
 describe( 'Ioc', function () {
 
     const registrar = Registrar
-        .bind( 'ioc', function () {
-
-            return this;
-
-        } )
         .bind( 'bind', function *() {
 
             let singleton = yield this.use( 'singleton' );
