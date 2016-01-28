@@ -1,7 +1,5 @@
 'use strict';
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-
 const _ = require('lodash');
 const Co = require('co');
 const Promise = require('bluebird');
@@ -75,13 +73,13 @@ class Ioc {
             return Promise.resolve(binding);
         }
 
-        let dependencies = _.isArray(binding.dependencies) ? binding.dependencies : [];
+        let services = _.isArray(binding.services) ? binding.services : [];
 
-        if (!dependencies.length) {
+        if (!services.length) {
             return Promise.resolve(new binding());
         }
 
-        return Promise.resolve(dependencies).mapSeries(dependency => this.use(dependency)).then(dependencies => new (Function.prototype.bind.apply(binding, [null].concat(_toConsumableArray(dependencies))))());
+        return Promise.props(_(services).zipObject(services).mapValues(service => this.use(service)).value()).then(services => new binding(services));
     }
 
     _type(binding) {
