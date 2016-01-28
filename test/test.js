@@ -55,15 +55,17 @@ describe( 'Ioc', function () {
 
             constructor( services ) {
 
+                Object.assign( this, services );
+
                 Promise
                     .join(
-                        services.ioc.use( 'bind' ),
-                        services.ioc.use( 'singleton' )
+                        this.ioc.use( 'bind' ),
+                        this.ioc.use( 'singleton' )
                     )
                     .spread( ( bind, singleton ) => {
 
-                        assert.notEqual( services.bind, bind );
-                        assert.equal( services.singleton, singleton );
+                        assert.notEqual( this.bind, bind );
+                        assert.equal( this.singleton, singleton );
 
                         done();
 
