@@ -108,6 +108,14 @@ class Registrar {
 
     }
 
+    namespace( ...args ) {
+
+        this._callInPromise( 'namespace', args );
+
+        return this;
+
+    }
+
     constant( ...args ) {
 
         this._callInPromise( 'constant', args );
