@@ -35,28 +35,34 @@ class Registrar {
         return (_Registrar$create2 = Registrar.create()).alias.apply(_Registrar$create2, arguments);
     }
 
-    static constant() {
+    static namespace() {
         var _Registrar$create3;
 
-        return (_Registrar$create3 = Registrar.create()).constant.apply(_Registrar$create3, arguments);
+        return (_Registrar$create3 = Registrar.create()).namespace.apply(_Registrar$create3, arguments);
+    }
+
+    static constant() {
+        var _Registrar$create4;
+
+        return (_Registrar$create4 = Registrar.create()).constant.apply(_Registrar$create4, arguments);
     }
 
     static bind() {
-        var _Registrar$create4;
+        var _Registrar$create5;
 
-        return (_Registrar$create4 = Registrar.create()).bind.apply(_Registrar$create4, arguments);
+        return (_Registrar$create5 = Registrar.create()).bind.apply(_Registrar$create5, arguments);
     }
 
     static singleton() {
-        var _Registrar$create5;
+        var _Registrar$create6;
 
-        return (_Registrar$create5 = Registrar.create()).singleton.apply(_Registrar$create5, arguments);
+        return (_Registrar$create6 = Registrar.create()).singleton.apply(_Registrar$create6, arguments);
     }
 
     static resolve() {
-        var _Registrar$create6;
+        var _Registrar$create7;
 
-        return (_Registrar$create6 = Registrar.create()).resolve.apply(_Registrar$create6, arguments);
+        return (_Registrar$create7 = Registrar.create()).resolve.apply(_Registrar$create7, arguments);
     }
 
     constructor() {
@@ -104,9 +110,19 @@ class Registrar {
         return this;
     }
 
-    constant() {
+    namespace() {
         for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
             args[_key3] = arguments[_key3];
+        }
+
+        this._callInPromise('namespace', args);
+
+        return this;
+    }
+
+    constant() {
+        for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+            args[_key4] = arguments[_key4];
         }
 
         this._callInPromise('constant', args);
@@ -115,8 +131,8 @@ class Registrar {
     }
 
     bind() {
-        for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-            args[_key4] = arguments[_key4];
+        for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+            args[_key5] = arguments[_key5];
         }
 
         this._callInPromise('bind', args);
@@ -125,8 +141,8 @@ class Registrar {
     }
 
     singleton() {
-        for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-            args[_key5] = arguments[_key5];
+        for (var _len6 = arguments.length, args = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+            args[_key6] = arguments[_key6];
         }
 
         this._callInPromise('singleton', args);
@@ -135,8 +151,8 @@ class Registrar {
     }
 
     resolve() {
-        for (var _len6 = arguments.length, closure = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
-            closure[_key6] = arguments[_key6];
+        for (var _len7 = arguments.length, closure = Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+            closure[_key7] = arguments[_key7];
         }
 
         _.flattenDeep(closure).forEach(closure => {

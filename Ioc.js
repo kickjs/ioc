@@ -14,6 +14,7 @@ class Ioc {
 
         this._services = {};
         this._aliases = {};
+        this._namespaces = {};
     }
 
     alias(alias, target) {
@@ -28,6 +29,20 @@ class Ioc {
         }
 
         this._aliases[alias] = target;
+    }
+
+    namespace(namespace, target) {
+
+        if (_.isPlainObject(namespace)) {
+            _.each(namespace, (target, namespace) => {
+
+                this.namespace(namespace, target);
+            });
+
+            return;
+        }
+
+        this._namespaces[this._normalizeNamespace(namespace)] = target;
     }
 
     constant(name, value) {
@@ -54,7 +69,7 @@ class Ioc {
                 return this.use(this._aliases[name]);
         }
 
-        return Promise.resolve(require(name));
+        return Promise.resolve(this._require(name));
     }
 
     make(binding) {
@@ -66,7 +81,7 @@ class Ioc {
                     return this.use(binding);
             }
 
-            binding = require(binding);
+            binding = this._require(binding);
         }
 
         if (!Helpers.isClass(binding)) {
@@ -84,11 +99,12 @@ class Ioc {
 
     _type(binding) {
 
-        switch (true) {
-            case !!this._services[binding]:
-                return SERVICE;
-            case !!this._aliases[binding]:
-                return ALIAS;
+        if (this._services[binding]) {
+            return SERVICE;
+        }
+
+        if (this._aliases[binding]) {
+            return ALIAS;
         }
 
         return null;
@@ -116,6 +132,39 @@ class Ioc {
         }
 
         return resolve;
+    }
+
+    _require(path) {
+
+        let match = this._matchNamespace(path);
+
+        if (match) {
+            return require(match);
+        }
+
+        return require(path);
+    }
+
+    _matchNamespace(path) {
+
+        path = this._normalizeNamespace(path);
+
+        for (let namespace in this._namespaces) {
+            if (path == namespace) {
+                return this._namespaces[namespace];
+            }
+
+            if (path.startsWith(namespace + '/')) {
+                return _.trimEnd(this._namespaces[namespace], '\\\/') + path.substr(namespace.length);
+            }
+        }
+
+        return null;
+    }
+
+    _normalizeNamespace(namespace) {
+
+        return _.chain(namespace).split(/[\\\/]/g).compact().join('/').value();
     }
 
 }
