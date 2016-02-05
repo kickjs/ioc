@@ -37,6 +37,12 @@ class Registrar {
 
     }
 
+    static namespace( ...args ) {
+
+        return Registrar.create().namespace( ...args );
+
+    }
+
     static constant( ...args ) {
 
         return Registrar.create().constant( ...args );

@@ -4,7 +4,6 @@ require( 'babel-polyfill' );
 
 const assert    = require( 'assert' );
 const _         = require( 'lodash' );
-const Promise   = require( 'bluebird' );
 const Ioc       = require( '../src/Ioc' );
 const Registrar = require( '../src/Registrar' );
 
@@ -12,6 +11,7 @@ const Registrar = require( '../src/Registrar' );
 describe( 'Ioc', function () {
 
     const registrar = Registrar
+        .namespace( 'controllers', __dirname + '/controllers' )
         .bind( 'bind', function *() {
 
             let singleton = yield this.use( 'singleton' );
@@ -45,39 +45,23 @@ describe( 'Ioc', function () {
 
     it( 'ioc.make', function ( done ) {
 
-        class Controller {
-
-            static get services() {
-
-                return [ 'ioc', 'bind', 'singleton' ];
-
-            }
-
-            constructor( services ) {
-
-                Object.assign( this, services );
-
-                Promise
-                    .join(
-                        this.ioc.use( 'bind' ),
-                        this.ioc.use( 'singleton' )
-                    )
-                    .spread( ( bind, singleton ) => {
-
-                        assert.notEqual( this.bind, bind );
-                        assert.equal( this.singleton, singleton );
-
-                        done();
-
-                    } );
-
-            }
-
-        }
 
         registrar.resolve( function *() {
 
-            yield this.make( Controller );
+            yield this.make( '/controllers/test' )
+                .then( function ( test ) {
+
+                    return [ test.bind, test.ioc.make( 'bind' ), test.singleton, test.ioc.make( 'singleton' ) ];
+
+                } )
+                .spread( function ( bind1, bind2, singleton1, singleton2 ) {
+
+                    assert.notEqual( bind1, bind2 );
+                    assert.equal( singleton1, singleton2 );
+
+                    done();
+
+                } );
 
         } );
 

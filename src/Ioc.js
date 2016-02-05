@@ -1,6 +1,5 @@
 'use strict';
 
-
 const _       = require( 'lodash' );
 const Co      = require( 'co' );
 const Promise = require( 'bluebird' );
@@ -126,12 +125,14 @@ class Ioc {
 
     _type( binding ) {
 
-        switch ( true )
+        if ( this._services[ binding ] )
         {
-            case !!this._services[ binding ]:
-                return SERVICE;
-            case !!this._aliases[ binding ]:
-                return ALIAS;
+            return SERVICE;
+        }
+
+        if ( this._aliases[ binding ] )
+        {
+            return ALIAS;
         }
 
         return null;
@@ -168,11 +169,18 @@ class Ioc {
 
     _require( path ) {
 
-        return require( this._replaceNamespace( path ) );
+        let match = this._matchNamespace( path );
+
+        if ( match )
+        {
+            return require( match );
+        }
+
+        return require( path );
 
     }
 
-    _replaceNamespace( path ) {
+    _matchNamespace( path ) {
 
         path = this._normalizeNamespace( path );
 
@@ -189,7 +197,7 @@ class Ioc {
             }
         }
 
-        return path;
+        return null;
 
     }
 
