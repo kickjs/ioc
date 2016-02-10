@@ -72,6 +72,13 @@ class Ioc {
 
     use( name ) {
 
+        var names = Array.prototype.slice.call( arguments );
+
+        if ( names.length > 1 )
+        {
+            return Promise.all( names.map( name => this.use( name ) ) );
+        }
+
         switch ( this._type( name ) )
         {
             case SERVICE:
@@ -85,6 +92,13 @@ class Ioc {
     }
 
     make( binding ) {
+
+        var bindings = Array.prototype.slice.call( arguments );
+
+        if ( bindings.length > 1 )
+        {
+            return Promise.all( bindings.map( binding => this.make( binding ) ) );
+        }
 
         if ( _.isString( binding ) )
         {

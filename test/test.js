@@ -12,6 +12,11 @@ describe( 'Ioc', function () {
 
     const registrar = Registrar
         .namespace( 'controllers', __dirname + '/controllers' )
+        .bind( 'ioc', function *() {
+
+            return this;
+
+        } )
         .bind( 'bind', function *() {
 
             let singleton = yield this.use( 'singleton' );
@@ -29,10 +34,7 @@ describe( 'Ioc', function () {
 
         registrar.resolve( function *() {
 
-            let bind1      = yield this.use( 'bind' );
-            let bind2      = yield this.use( 'bind' );
-            let singleton1 = yield this.use( 'singleton' );
-            let singleton2 = yield this.use( 'singleton' );
+            let [ bind1, bind2, singleton1, singleton2 ]  = yield this.use( 'bind', 'bind', 'singleton', 'singleton' );
 
             assert.notEqual( bind1, bind2 );
             assert.equal( singleton1, singleton2 );
